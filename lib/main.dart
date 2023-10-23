@@ -9,7 +9,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await FirebaseApi().initNotifications();
+  await FirebaseApi().initNotifications();
 
   runApp(const MyApp());
 }
@@ -37,9 +37,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late SensorData sensorData;
   @override
   void initState() {
     super.initState();
+    FirebaseApi().fetchDataFromFirebase().then((data) {
+      setState(() {
+        sensorData = data;
+      });
+    });
   }
 
   @override
