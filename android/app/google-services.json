@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "333978274880",
-    "project_id": "proyekaplikasi-38dde",
-    "storage_bucket": "proyekaplikasi-38dde.appspot.com"
+    "project_number": "576562179070",
+    "firebase_url": "https://mark-i-inferno-default-rtdb.firebaseio.com",
+    "project_id": "mark-i-inferno",
+    "storage_bucket": "mark-i-inferno.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:333978274880:android:97a8a9809965ff9cda63a5",
+        "mobilesdk_app_id": "1:576562179070:android:a4d976b0e4f7bb0fc82eaf",
         "android_client_info": {
           "package_name": "com.example.proyek_aplikasi"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCGoW7F2btWETlZzWXIQo7sEi1Tiq24Ltg"
+          "current_key": "AIzaSyAxm198eJMpZzqs47e497nF6gPDSUPpuRA"
         }
       ],
       "services": {

@@ -44,37 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCuutF4Pb112mjrP6Abun0LiW2737SO7jY',
-    appId: '1:333978274880:web:46421dde05f3c895da63a5',
-    messagingSenderId: '333978274880',
-    projectId: 'proyekaplikasi-38dde',
-    authDomain: 'proyekaplikasi-38dde.firebaseapp.com',
-    storageBucket: 'proyekaplikasi-38dde.appspot.com',
+    apiKey: 'AIzaSyCqkcY3yQUz77BH7oAilr1hskvZsld6rDw',
+    appId: '1:576562179070:web:daf54afb56130de2c82eaf',
+    messagingSenderId: '576562179070',
+    projectId: 'mark-i-inferno',
+    authDomain: 'mark-i-inferno.firebaseapp.com',
+    databaseURL: 'https://mark-i-inferno-default-rtdb.firebaseio.com',
+    storageBucket: 'mark-i-inferno.appspot.com',
+    measurementId: 'G-7QG03LDKCV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCGoW7F2btWETlZzWXIQo7sEi1Tiq24Ltg',
-    appId: '1:333978274880:android:97a8a9809965ff9cda63a5',
-    messagingSenderId: '333978274880',
-    projectId: 'proyekaplikasi-38dde',
-    storageBucket: 'proyekaplikasi-38dde.appspot.com',
+    apiKey: 'AIzaSyAxm198eJMpZzqs47e497nF6gPDSUPpuRA',
+    appId: '1:576562179070:android:a4d976b0e4f7bb0fc82eaf',
+    messagingSenderId: '576562179070',
+    projectId: 'mark-i-inferno',
+    databaseURL: 'https://mark-i-inferno-default-rtdb.firebaseio.com',
+    storageBucket: 'mark-i-inferno.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDKblQz5QSUAmMjWFaTXm0iYY8R6NKjW_Y',
-    appId: '1:333978274880:ios:5435317b91e22372da63a5',
-    messagingSenderId: '333978274880',
-    projectId: 'proyekaplikasi-38dde',
-    storageBucket: 'proyekaplikasi-38dde.appspot.com',
+    apiKey: 'AIzaSyDuX7zremhOOb4V523JDDkGn5kFyNLv41Y',
+    appId: '1:576562179070:ios:a724d801f7eec73dc82eaf',
+    messagingSenderId: '576562179070',
+    projectId: 'mark-i-inferno',
+    databaseURL: 'https://mark-i-inferno-default-rtdb.firebaseio.com',
+    storageBucket: 'mark-i-inferno.appspot.com',
     iosBundleId: 'com.example.proyekAplikasi',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDKblQz5QSUAmMjWFaTXm0iYY8R6NKjW_Y',
-    appId: '1:333978274880:ios:1674b0f088813649da63a5',
-    messagingSenderId: '333978274880',
-    projectId: 'proyekaplikasi-38dde',
-    storageBucket: 'proyekaplikasi-38dde.appspot.com',
+    apiKey: 'AIzaSyDuX7zremhOOb4V523JDDkGn5kFyNLv41Y',
+    appId: '1:576562179070:ios:54a1bbc34bea0f1bc82eaf',
+    messagingSenderId: '576562179070',
+    projectId: 'mark-i-inferno',
+    databaseURL: 'https://mark-i-inferno-default-rtdb.firebaseio.com',
+    storageBucket: 'mark-i-inferno.appspot.com',
     iosBundleId: 'com.example.proyekAplikasi.RunnerTests',
   );
 }

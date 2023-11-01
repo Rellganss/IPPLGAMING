@@ -19,9 +19,8 @@ class FirebaseApi {
   }
 
   Future<SensorData> fetchDataFromFirebase() async {
-    final response = await http.get(
-        'https://mark-i-inferno-default-rtdb.firebaseio.com/data.json?auth=AIzaSyCqkcY3yQUz77BH7oAilr1hskvZsld6rDw'
-            as Uri);
+    final response = await http.get(Uri.parse(
+        'https://console.firebase.google.com/project/mark-i-inferno/database/mark-i-inferno-default-rtdb/data/.json'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -33,24 +32,23 @@ class FirebaseApi {
 }
 
 class SensorData {
-  final String status;
-  final String asap;
-  final String suhu;
-  final String kelembapan;
+  final double kelembapan;
+  final int suhu;
+  final bool asap;
 
   SensorData({
-    required this.status,
-    required this.asap,
-    required this.suhu,
     required this.kelembapan,
+    required this.suhu,
+    required this.asap,
   });
 
   factory SensorData.fromJson(Map<String, dynamic> json) {
     return SensorData(
-      status: json['status'],
-      asap: json['asap'],
-      suhu: json['suhu'],
-      kelembapan: json['kelembapan'],
+      kelembapan: json['kelembaban'] ??
+          0.0, // Gantilah 0.0 dengan nilai default yang sesuai
+      suhu: json['suhu'] ?? 0, // Gantilah 0 dengan nilai default yang sesuai
+      asap: json['asap'] ??
+          false, // Gantilah false dengan nilai default yang sesuai
     );
   }
 }
