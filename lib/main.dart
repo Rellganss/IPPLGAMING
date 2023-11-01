@@ -23,14 +23,7 @@ void main() async {
 }
 
 class ThemeProvider extends ChangeNotifier {
-  bool _isDarkMode = false;
-
-  bool get isDarkMode => _isDarkMode;
-
-  void toggleTheme() {
-    _isDarkMode = !_isDarkMode;
-    notifyListeners();
-  }
+  // No need for dark mode state and toggle
 }
 
 class MyApp extends StatelessWidget {
@@ -38,14 +31,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // No need to retrieve the themeProvider
 
     MaterialColor myPrimaryColor = const MaterialColor(0xFF00FDA4, {
       50: Color(0xFFE0FFF1),
       100: Color(0xFFB3FFDE),
       200: Color(0xFF80FFC8),
       300: Color(0xFF4DFFB1),
-      400: Color(0xFF26FFA0),
       500: Color(0xFF00FDA4),
       600: Color(0xFF00DB94),
       700: Color(0xFF00B982),
@@ -57,8 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'Sensor Value App',
       theme: ThemeData(
         primarySwatch: myPrimaryColor,
-        brightness:
-            themeProvider.isDarkMode ? Brightness.dark : Brightness.light,
+        // No need to check for dark mode
       ),
       home: const MySensorPage(),
     );
@@ -73,18 +64,19 @@ class MySensorPage extends StatefulWidget {
 }
 
 class _MySensorPageState extends State<MySensorPage> {
-  late double asapValue;
   late double suhuValue;
-  late double kelembapanValue;
+  late double asapValue;
   late double apiValue;
+  late double kelembapanValue;
 
-  late DatabaseReference _asapRef;
   late DatabaseReference _suhuRef;
-  late DatabaseReference _kelembapanRef;
   late DatabaseReference _apiRef;
+  late DatabaseReference _asapRef;
+  late DatabaseReference _kelembapanRef;
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  final double apiThreshold = 1;
 
   Future<void> showNotification(String sensorName, double sensorValue) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -102,7 +94,7 @@ class _MySensorPageState extends State<MySensorPage> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Nilai Sensor Dibawah Ketentuan',
+      'Terjadi Kebakaran',
       '$sensorName: $sensorValue',
       platformChannelSpecifics,
     );
@@ -133,12 +125,13 @@ class _MySensorPageState extends State<MySensorPage> {
   @override
   void initState() {
     super.initState();
-    asapValue = 0.0; // Initialize to some default value
-    suhuValue = 0.0; // Initialize to some default value
-    kelembapanValue = 0.0; // Initialize to some default value
+    apiValue = 0.0;
+    suhuValue = 0.0;
+    asapValue = 0.0;
+    kelembapanValue = 0.0;
 
-    _asapRef = FirebaseDatabase.instance.reference().child('m2q/asap');
     _suhuRef = FirebaseDatabase.instance.reference().child('dht/suhu');
+    _asapRef = FirebaseDatabase.instance.reference().child('m2q/asap');
     _kelembapanRef =
         FirebaseDatabase.instance.reference().child('dht/kelembapan');
     _apiRef = FirebaseDatabase.instance.reference().child('flame/api');
@@ -148,6 +141,20 @@ class _MySensorPageState extends State<MySensorPage> {
       if (data != null) {
         setState(() {
           suhuValue = double.parse(data.toString());
+        });
+      }
+    });
+
+    _apiRef.onValue.listen((event) {
+      final data = event.snapshot.value;
+      if (data != null) {
+        setState(() {
+          apiValue = double.parse(data.toString());
+          if (apiValue >= apiThreshold) {
+            showNotification('kondisi api', apiValue);
+          } else {
+            showNotification('kondisi api', apiValue);
+          }
         });
       }
     });
@@ -169,21 +176,12 @@ class _MySensorPageState extends State<MySensorPage> {
         });
       }
     });
-
-    _apiRef.onValue.listen((event) {
-      final data = event.snapshot.value;
-      if (data != null) {
-        setState(() {
-          apiValue = double.parse(data.toString());
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
-    _asapRef.onValue.drain();
     _suhuRef.onValue.drain();
+    _asapRef.onValue.drain();
     _kelembapanRef.onValue.drain();
     _apiRef.onValue.drain();
     super.dispose();
@@ -191,98 +189,140 @@ class _MySensorPageState extends State<MySensorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff142870),
-          title: const Text(
-            'Inferno Sense',
-            style: TextStyle(color: Colors.white, fontFamily: 'RobotoMono'),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                themeProvider.toggleTheme();
-              },
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 200, 16, 16),
+        title: const Text(
+          'Inferno Sense',
+          style: TextStyle(color: Colors.white, fontFamily: 'RobotoMono'),
         ),
-        body: SingleChildScrollView(
-          child: Center(
+      ),
+      body: Center(
+        // Wrap the card with a Center widget
+        child: Container(
+          width: 300.0,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 53, 198, 40),
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 20,
+                offset: const Offset(0, 3),
+              ),
+            ],
+            border: Border.all(
+              color: const Color(0xff142870),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const SizedBox(height: 10.0),
-                buildSensorCard(
-                    'SUHU', suhuValue, '°C', themeProvider.isDarkMode),
-                buildSensorCard(
-                    'Asap', asapValue, '', themeProvider.isDarkMode),
-                buildSensorCard('Kelembapan', kelembapanValue, 'pH',
-                    themeProvider.isDarkMode),
+                Column(
+                  children: [
+                    const Text(
+                      'SUHU',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      '${suhuValue.toStringAsFixed(1)} °C',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    const Text(
+                      'Asap',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      asapValue.toStringAsFixed(1),
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    const Text(
+                      'Kelembapan',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      '${kelembapanValue.toStringAsFixed(1)} ',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    const Text(
+                      'API',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      apiValue.toStringAsFixed(1),
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'RobotoMono',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ));
-  }
-}
-
-Widget buildSensorCard(
-    String title, double value, String unit, bool isDarkMode) {
-  Color cardBackgroundColor =
-      isDarkMode ? Colors.black : const Color(0xff54DCC7);
-  Color borderColor = isDarkMode ? Colors.white : const Color(0xff142870);
-  Color textColor = isDarkMode ? Colors.white : const Color(0xff142870);
-
-  return Container(
-    width: 300.0,
-    margin: const EdgeInsets.symmetric(vertical: 10),
-    decoration: BoxDecoration(
-      color: cardBackgroundColor,
-      borderRadius: BorderRadius.circular(15.0),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.2),
-          spreadRadius: 2,
-          blurRadius: 20,
-          offset: const Offset(0, 3),
         ),
-      ],
-      border: Border.all(
-        color: borderColor,
-        width: 2,
       ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
-              fontFamily: 'RobotoMono',
-              color: textColor,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${value.toStringAsFixed(1)} $unit',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'RobotoMono',
-              color: textColor,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+    );
+  }
 }
