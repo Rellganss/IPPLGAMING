@@ -10,20 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeProvider>(
-          create: (context) => ThemeProvider(),
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
-}
-
-class ThemeProvider extends ChangeNotifier {
-  // No need for dark mode state and toggle
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,8 +18,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // No need to retrieve the themeProvider
-
     MaterialColor myPrimaryColor = const MaterialColor(0xFF00FDA4, {
       50: Color(0xFFE0FFF1),
       100: Color(0xFFB3FFDE),
