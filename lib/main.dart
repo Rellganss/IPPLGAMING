@@ -65,18 +65,17 @@ class MySensorPage extends StatefulWidget {
 
 class _MySensorPageState extends State<MySensorPage> {
   late double suhuValue;
-  late double asapValue;
   late double apiValue;
   late double kelembapanValue;
 
   late DatabaseReference _suhuRef;
   late DatabaseReference _apiRef;
-  late DatabaseReference _asapRef;
   late DatabaseReference _kelembapanRef;
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final double apiThreshold = 1;
+  final double suhuThreshold = 35;
 
   Future<void> showNotification(String sensorName, double sensorValue) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -94,7 +93,7 @@ class _MySensorPageState extends State<MySensorPage> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Terjadi Kebakaran',
+      'kondisi aman, tidak ada Api pada ruangan',
       '$sensorName: $sensorValue',
       platformChannelSpecifics,
     );
@@ -116,7 +115,29 @@ class _MySensorPageState extends State<MySensorPage> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Nilai Sensor melebihi Ketentuan',
+      'Terdapat Api pada ruangan',
+      '$sensorName: $sensorValue',
+      platformChannelSpecifics,
+    );
+  }
+
+  Future<void> showNotification3(String sensorName, double sensorValue) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your_channel_id',
+      'Sensor Notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+      icon: 'mipmap/ic_launcher',
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Nilai Suhu melebihi Ketentuan',
       '$sensorName: $sensorValue',
       platformChannelSpecifics,
     );
@@ -125,13 +146,12 @@ class _MySensorPageState extends State<MySensorPage> {
   @override
   void initState() {
     super.initState();
+
     apiValue = 0.0;
     suhuValue = 0.0;
-    asapValue = 0.0;
     kelembapanValue = 0.0;
 
     _suhuRef = FirebaseDatabase.instance.reference().child('dht/suhu');
-    _asapRef = FirebaseDatabase.instance.reference().child('m2q/asap');
     _kelembapanRef =
         FirebaseDatabase.instance.reference().child('dht/kelembapan');
     _apiRef = FirebaseDatabase.instance.reference().child('flame/api');
@@ -141,6 +161,9 @@ class _MySensorPageState extends State<MySensorPage> {
       if (data != null) {
         setState(() {
           suhuValue = double.parse(data.toString());
+          if (suhuValue >= suhuThreshold) {
+            showNotification3('kondisi suhu menunjukkan', suhuValue);
+          }
         });
       }
     });
@@ -151,19 +174,11 @@ class _MySensorPageState extends State<MySensorPage> {
         setState(() {
           apiValue = double.parse(data.toString());
           if (apiValue >= apiThreshold) {
-            showNotification('kondisi api', apiValue);
-          } else {
-            showNotification('kondisi api', apiValue);
+            showNotification('kondisi api menunjukkan', apiValue);
           }
-        });
-      }
-    });
-
-    _asapRef.onValue.listen((event) {
-      final data = event.snapshot.value;
-      if (data != null) {
-        setState(() {
-          asapValue = double.parse(data.toString());
+          if (apiValue < apiThreshold) {
+            showNotification2('Terdapat api pada ruangan', apiValue);
+          }
         });
       }
     });
@@ -181,7 +196,6 @@ class _MySensorPageState extends State<MySensorPage> {
   @override
   void dispose() {
     _suhuRef.onValue.drain();
-    _asapRef.onValue.drain();
     _kelembapanRef.onValue.drain();
     _apiRef.onValue.drain();
     super.dispose();
@@ -237,30 +251,6 @@ class _MySensorPageState extends State<MySensorPage> {
                     const SizedBox(height: 10),
                     Text(
                       '${suhuValue.toStringAsFixed(1)} °C',
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'RobotoMono',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  children: [
-                    const Text(
-                      'Asap',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'RobotoMono',
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      asapValue.toStringAsFixed(1),
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
