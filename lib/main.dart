@@ -18,23 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MaterialColor myPrimaryColor = const MaterialColor(0xFF00FDA4, {
-      50: Color(0xFFE0FFF1),
-      100: Color(0xFFB3FFDE),
-      200: Color(0xFF80FFC8),
-      300: Color(0xFF4DFFB1),
-      500: Color(0xFF00FDA4),
-      600: Color(0xFF00DB94),
-      700: Color(0xFF00B982),
-      800: Color(0xFF009770),
-      900: Color(0xFF006B5E),
-    });
 
     return MaterialApp(
       title: 'Sensor Value App',
       theme: ThemeData(
-        primarySwatch: myPrimaryColor,
-        // No need to check for dark mode
+        primarySwatch: Colors.blue
       ),
       home: const MySensorPage(),
     );
@@ -202,7 +190,7 @@ class _MySensorPageState extends State<MySensorPage> {
           width: 300.0,
           margin: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 53, 198, 40),
+            color:Color(0xFFF0F8FF),
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
@@ -230,7 +218,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -240,7 +228,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -254,7 +242,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -264,7 +252,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -278,7 +266,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -288,7 +276,7 @@ class _MySensorPageState extends State<MySensorPage> {
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'RobotoMono',
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
