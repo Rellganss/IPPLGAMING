@@ -17,12 +17,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      title: 'Sensor Value App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue
-      ),
+      title: 'Inferno Sense',
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MySensorPage(),
     );
   }
@@ -180,7 +177,7 @@ class _MySensorPageState extends State<MySensorPage> {
         backgroundColor: const Color.fromARGB(255, 200, 16, 16),
         title: const Text(
           'Inferno Sense',
-          style: TextStyle(color: Colors.white, fontFamily: 'RobotoMono'),
+          style: TextStyle(color: Colors.white, fontFamily: 'Alegreya'),
         ),
       ),
       body: Center(
@@ -189,7 +186,10 @@ class _MySensorPageState extends State<MySensorPage> {
           width: 300.0,
           margin: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color:Color(0xFFF0F8FF),
+            image: const DecorationImage(
+              image: AssetImage('assets/Background_InfernoSense.jpg'),
+              fit: BoxFit.cover,
+            ),
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
@@ -212,11 +212,11 @@ class _MySensorPageState extends State<MySensorPage> {
                 Column(
                   children: [
                     const Text(
-                      'SUHU',
+                      'Suhu',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'RobotoMono',
+                        fontFamily: 'Cormorant',
                         color: Colors.black,
                       ),
                     ),
@@ -240,7 +240,7 @@ class _MySensorPageState extends State<MySensorPage> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'RobotoMono',
+                        fontFamily: 'Cormorant',
                         color: Colors.black,
                       ),
                     ),
@@ -260,11 +260,11 @@ class _MySensorPageState extends State<MySensorPage> {
                 Column(
                   children: [
                     const Text(
-                      'API',
+                      'Api',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'RobotoMono',
+                        fontFamily: 'Cormorant',
                         color: Colors.black,
                       ),
                     ),
